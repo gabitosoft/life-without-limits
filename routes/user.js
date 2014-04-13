@@ -28,9 +28,12 @@ module.exports = function (app) {
     User.create({
       name: req.body.name,
       email: req.body.email,
-      admin: false,
       online: false,
-      encryptedPassword: encryptedPwd
+      encryptedPassword: encryptedPwd,
+      maxTemperature: '',
+      minTemperature: '',
+      skyColor: '',
+      alertSwitch: 'on'
     }, function(err) {
       if (err) {
         res.send(err);
@@ -44,12 +47,12 @@ module.exports = function (app) {
   // POST login user
   app.post('/api/user/login', function(req, res) {
 
-    if (!req.param('username') || !req.param('password')) {
+    if (!req.param('email') || !req.param('password')) {
       res.send(500, 'Invalid parameters');
       return;
     }
 
-    User.findOne({ email: req.param('username') }, function(err, user) {
+    User.findOne({ email: req.param('email') }, function(err, user) {
 
       if (err) {
           res.send(500, 'User not found');
@@ -76,7 +79,7 @@ module.exports = function (app) {
         req.session.User = user;
 
         // Change status to online
-        user.update({ email: user.email }, { online : true }, function(err) {
+        User.update({ email: user.email }, { online : true }, function(err) {
           if (err) {
 
             res.send(500, 'login: fail on update');
@@ -98,32 +101,62 @@ module.exports = function (app) {
   // POST logout user
   app.post('/api/user/logout', function(req, res) {
     //var query = { userId: req.session.User.id };
-    User.findOne(req.session.User.id, function foundUser(err, user){
+    // User.findOne(req.session.User.id, function foundUser(err, user){
 
-      var userId = req.session.User.id;
+    //   var userId = req.session.User.id;
 
-      if (user) {
-        // The user is "logging out" (e.g. destroying the session) so change the online attribute to false.
-        User.update({ email: user.email }, { online: false }, function(err) {
-          if (err) return res.send(500, 'logout: fail on update');
+    //   if (user) {
+    //     // The user is "logging out" (e.g. destroying the session) so change the online attribute to false.
+    //     User.update({ email: user.email }, { online: false }, function(err) {
+    //       if (err) return res.send(500, 'logout: fail on update');
 
-          // Inform other sockets (e.g. connected sockets that are subscribed) that this user is now logged out
-          for (var username in app.connections) {
-            app.connections[username].emit('disconnected', user.id);
-          }
+    //       // Inform other sockets (e.g. connected sockets that are subscribed) that this user is now logged out
+    //       for (var username in app.connections) {
+    //         app.connections[username].emit('disconnected', user.id);
+    //       }
 
-          // Wipe out the session (log out)
-          req.session.destroy();
+    //       // Wipe out the session (log out)
+    //       req.session.destroy();
 
-          // Redirect the browser to the sign-in screen
-          res.send(200);
-        });
-      } else {
-        // Wipe out the session (log out)
-        req.session.destroy();
+    //       // Redirect the browser to the sign-in screen
+    //       res.send(200);
+    //     });
+    //   } else {
+    //     // Wipe out the session (log out)
+    //     req.session.destroy();
 
-        res.send(500, 'User not found');
+    //     res.send(500, 'User not found');
+    //   }
+    // });
+  });
+
+  // POST save settings an User
+  app.post('/api/user/settings', function(req, res) {
+    User.findOne({ email: req.param('email') }, function(err, user) {
+
+      if (!user) {
+          res.send(500, 'User not found');
+          return ;
       }
+
+      console.log(user);
+
+      // Change status to online
+      User.update({ email: user.email }, 
+        { 
+          maxTemperature: req.param('max'),
+          minTemperature: req.param('min'),
+          skyColor: req.param('sky'),
+          alertSwitch: req.param('alert')
+        }, function(err) {
+        if (err) {
+
+          res.send(500, 'settings: fail on update');
+          return 
+        }
+
+        res.send(200, { token: '1234567' });
+      });
     });
   });
 

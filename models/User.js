@@ -14,6 +14,7 @@ module.exports = mongoose.model('user', {
   encryptedPassword: String,
   online: Boolean,
   maxTemperature: String,
-  minTemperature: String
+  minTemperature: String,
+  skyColor: String
 });
 

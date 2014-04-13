@@ -35,19 +35,19 @@ void setup()
 void loop()
 {
   // leer huemdad
-  float h = dht.readHumidity();
+  //float h = dht.readHumidity();
   
   // leer temperatura
   float t = dht.readTemperature();
 
   //  comprueba su los valores no son nulos
-  if(isnan(t) || isnan(h)) 
+  if(isnan(t)) 
   {  
-    Serial.println(" -- !! no se estan leendo datos ");
+    Serial.println(" -- !! No data received");
   } else 
   {
     // Muestra el valor de humedad
-    Serial.print("Venus1 - humedad: ");     Serial.print(h); Serial.print(" %\t");
+    //Serial.print("Venus1 - humedad: ");     Serial.print(h); Serial.print(" %\t");
     Serial.print("Venus1 - temperatura: "); Serial.print(t); Serial.print(" *C\n");
   }
   

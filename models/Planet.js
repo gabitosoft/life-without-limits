@@ -13,7 +13,6 @@ module.exports = mongoose.model('planet', {
   name: String,
   type: String,
   temperature: String,
-  picture: String,
   skyColor: String,
   longNight: String,
   uv: String

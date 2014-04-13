@@ -12,7 +12,6 @@ module.exports = function (app) {
       }
       res.json(planets);
     });
-    res.send(200);
   });
 
   // POST create a Planet
@@ -22,10 +21,9 @@ module.exports = function (app) {
     name: req.body.name,
     type: req.body.type,
     temperature: req.body.temperature,
-    picture: req.body.picture,
-    skyColor: req.body.skyColor,
+    skyColor: req.body.sky,
     longNight: req.body.longNight,
-    uv: String
+    uv: req.body.uv
   }, function(err) {
       if (err) {
         res.send(err);

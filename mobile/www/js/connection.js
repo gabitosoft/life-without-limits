@@ -13,12 +13,12 @@ function init() {
 
         loadScript('js/socket.io.js', function () {
 
-            var socket = io.connect($('#server').val());
+            var socket = io.connect($('#server').val() + ':' + $('#port').val());
             //var socket = io.connect("http://10.31.48.50:3000");
 
             socket.on('alert', function (data) {
                 $('#alertList').append('<li class="list-group-item-'+ data.type +'" ><a href="#description">' +
-                        '<h3 class="list-group-item-heading">' + data.title + '</h3>' +
+                        '<h3 class="list-group-item-heading">' + data.planet + '</h3>' +
                         '<p class="list-group-item-text">' + data.description + '</p>' +
                         '<p class="list-group-item-text">' + data.date + '</p>' +
                         '</a></li>'

@@ -11,10 +11,13 @@ var mongoose = require('mongoose');
 module.exports = mongoose.model('alert', {
   sensor: String,
   date: String,
-  title: String,
   token: String,    
   read: Boolean,
   type: String,
-  planetName: String
+  planet: String,
+  temperature: String,
+  description: String,
+  read: Boolean,
+  skyColor: String
 });
 

@@ -28,10 +28,10 @@
             <fieldset>
             <div class="ui-grid-a">
                 <div class="ui-block-a">
-                    <input type="text" id="server" placeholder="Server" value="192.168.1.22" />
+                    <input type="text" id="server" placeholder="Server" value="192.168.0.111" />
                     <input type="text" id="port" placeholder="Port" value="3000" />
-                    <input type="email" id="username" placeholder="Username" value="gabitosoft@gmail.com"/>
-                    <input type="password" id="password" placeholder="Password" value="mirmidon"/>
+                    <input type="email" id="username" placeholder="Email" value="jose@colina.com"/>
+                    <input type="password" id="password" placeholder="Password" value="colina"/>
                     <a href="#" id="login" data-role="button" data-theme="a">Login</a>
                 </div>
             </div>
@@ -51,10 +51,10 @@
     </div>
     <article data-role="content">
         <span id="status"></span>
+        <span id="serverUrl"></span>
+        <input type="hidden" id="userEmail"/>
         <div data-role="controlgroup" data-type="horizontal" class="btn-group">
-            <a data-role="button" data-theme="a" class="ui-btn-inline">Info</a>
-            <a data-role="button" data-theme="a" class="ui-btn-inline">Warning</a>
-            <a data-role="button" data-theme="a" class="ui-btn-inline">Danger</a>
+            <a data-role="button" data-theme="a" class="ui-btn-inline">Logout</a>
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">Alerts</div>
@@ -68,7 +68,7 @@
     <footer data-role="footer" data-fullscreen="true" data-position="fixed">
         <div data-role="navbar" data-iconpos="top">
             <ul>
-                <li><a href="#servers" data-icon="grid" >Sensors</a></li>
+                <li><a class="sensors" href="#sensors" data-icon="grid" >Sensors</a></li>
                 <li><a href="#alerts" data-icon="alert" >Alerts</a></li>
                 <li><a href="#settings" data-icon="gear" >Settings</a></li>
             </ul>
@@ -83,18 +83,24 @@
             <h1>Life Without Limits</h1>
         </div>
         <article data-role="content">
+        <span id="serverUrl"></span>
+        <input type="hidden" id="userEmail"/>
             <div data-role="fieldcontain">
-            <label for="flip-2">Alerts:</label>
-            <select name="flip-2" id="flip-2" data-role="slider">
-                <option value="off">Off</option>
-                <option selected value="on">On</option>
-            </select>
-        </div>
+                <label for="alertSwitch">Alerts:</label>
+                <select name="alertSwitch" id="alertSwitch" data-role="slider">
+                    <option value="off">Off</option>
+                    <option selected value="on">On</option>
+                </select>
+                <input type="text" id="max" placeholder="Max Temperature" />
+                <input type="text" id="min" placeholder="Min Temperature" />
+                <input type="text" id="skyColor" placeholder="Color Sky" />
+                <a href="#" id="saveSettings" data-role="button" data-theme="a">Save Settings</a>
+            </div>
         </article>
         <footer data-role="footer" data-fullscreen="true" data-position="fixed">
             <div data-role="navbar" data-iconpos="top">
                 <ul>
-                    <li><a href="#servers" data-icon="grid" >Sensors</a></li>
+                    <li><a class="sensors" href="#sensors" data-icon="grid" >Sensors</a></li>
                     <li><a href="#alerts" data-icon="alert" >Alerts</a></li>
                     <li><a href="#settings" data-icon="gear" >Settings</a></li>
                 </ul>
@@ -104,22 +110,20 @@
 <!-- /Settings -->
 
 <!-- Servers -->
-    <div data-role="page" id="servers" data-title="Servers">
+    <div data-role="page" id="sensors" data-title="Sensors">
         <div data-role="header">
             <h1>Life Without Limits</h1>
         </div>
         <article data-role="content">
-            <ul data-role="listview">
-                <li><label><input name="servers[]" type="checkbox" />Mars</label></li>
-                <li><label><input name="servers[]" type="checkbox" />Pluton</label></li>
-                <li><label><input name="servers[]" type="checkbox" />Moon</label></li>
-                <li><label><input name="servers[]" type="checkbox" />Titan</label></li>
+        <span id="serverUrl"></span>
+            <ul data-role="listview" id="list-sensors">
+            <!-- Sensors will be added here -->
             </ul>
         </article>
         <footer data-role="footer" data-position="fixed">
             <div data-role="navbar" data-iconpos="top">
                 <ul>
-                    <li><a href="#servers" data-icon="grid" >Sensors</a></li>
+                    <li><a class="sensors" href="#sensors" data-icon="grid" >Sensors</a></li>
                     <li><a href="#alerts" data-icon="alert" >Alerts</a></li>
                     <li><a href="#settings" data-icon="gear" >Settings</a></li>
                 </ul>
@@ -129,7 +133,7 @@
 <!-- /Servers-->
 
 <!-- Cordova -->
-<script type="text/javascript" src="cordova.js"></script>
+<!--<script type="text/javascript" src="cordova.js"></script>-->
 <!-- Bootstrap -->
 <script src="js/bootstrap-3.1.1-dist/js/bootstrap.min.js"></script>
 <!-- Connections -->
@@ -139,6 +143,8 @@
 <script>
 
     $('#login').on('click', login);    
+    $('.sensors').on('click', fillSensors);
+    $('#saveSettings').on('click', saveSettings);
     //document.addEventListener("deviceready", setup, false);
     
 </script>

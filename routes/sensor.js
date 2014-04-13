@@ -2,7 +2,7 @@
 // Paths to API
 module.exports = function (app) {
 
-  var Planet = require('../models/Sensor');
+  var Sensor = require('../models/Sensor');
 
   // GET for Planets
   app.get('/api/sensor', function(req, res) {
@@ -12,10 +12,9 @@ module.exports = function (app) {
       }
       res.json(sensors);
     });
-    res.send(200);
   });
 
-  // POST create a Planet
+  // POST create a Sensor
   app.post('/api/sensor/create', function(req, res) {
     
   Sensor.create({
@@ -30,7 +29,7 @@ module.exports = function (app) {
     res.send(200);
   });
 
-  // DELETE an specific Planet
+  // DELETE an specific Sensor
   app.delete('/api/sensor/:id', function(req, res) {
     Sensor.remove({
       _id: req.params.id
